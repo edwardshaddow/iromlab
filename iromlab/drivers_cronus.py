@@ -87,5 +87,5 @@ def unload():
 
 
 def reject():
-    """Reject mirrors unload per SLWA readme."""
+    """Reject mirrors unload to prevent reject pile overflow and blocking disk drives """
     return unload()
