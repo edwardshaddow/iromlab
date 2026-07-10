@@ -7,8 +7,8 @@ version = ""
 # Disc Robot
 driverScript  = ""
 cdDriveLetter = ""
-comPort       = ""
-comSpeed      = ""
+comPort       = "COM1" # default for Cronus
+comSpeed      = "9600" # default for Cronus
 
 reportFormatString = ""
 cdInfoExe = ""
