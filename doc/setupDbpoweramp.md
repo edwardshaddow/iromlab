@@ -23,6 +23,7 @@ After installing, locate the *dBpoweramp* item in the Windows Start Menu, and la
 Now the following window appears:
 
 ![](./img/dbpaBatchripperConfig2.png)
+*Note: both drives will be set as unconfigured when setting up initially*
 
 Under *Unconfigured Drives*, locate the Nimbie's drive select the CD-drive that corresponds to the Nimbie discrobot (make sure *not* to select the computer's built-in drive here; the Nimbie has a *Teac* drive so you should be able to identify it from its description). Click on *Configure* to the right-hand side of the drive.
 
