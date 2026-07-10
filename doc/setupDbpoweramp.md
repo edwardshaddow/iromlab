@@ -19,11 +19,11 @@ After installing, locate the *dBpoweramp* item in the Windows Start Menu, and la
 
 ![](./img/dbpaBatchripperConfig.png)
 
+### Nimbie configuration
 Now the following window appears:
 
 ![](./img/dbpaBatchripperConfig2.png)
 
-### Nimbie configuration
 Under *Unconfigured Drives*, locate the Nimbie's drive select the CD-drive that corresponds to the Nimbie discrobot (make sure *not* to select the computer's built-in drive here; the Nimbie has a *Teac* drive so you should be able to identify it from its description). Click on *Configure* to the right-hand side of the drive.
 
 Change *Loading Method* (top of the window) to *Nimbie* and then press *Configure Drive*:
@@ -31,13 +31,20 @@ Change *Loading Method* (top of the window) to *Nimbie* and then press *Configur
 ![](./img/dbpaBatchripperConfig3.png)
 
 ### Vinpower Cronus configuration
-Under *Unconfigured Drives*, locate the Cronus' drive select the CD-drive that corresponds to the top disk bay (should be the top drive but you may need to manually load a disc beforehand to identify the drives). Click on *Configure* to the right-hand side of the drive.
+Now the following window appears:
 
-Change *Loading Method* (top of the window) to *VinpowerCronusDrive1* (it will auto populate the CLI fields do not change these) and then press *Configure Drive*:
+![](./img/dBpaBatchripperCronusConfig1.png)
+
+Under *Unconfigured Drives*, locate the Cronus' drive select the CD-drive that corresponds to the top disk bay (should be the top/first drive listed but you may need to manually load a disc to identify the drives). Click on *Configure* to the right-hand side of the drive.
+
+Change *Loading Method* (top of the window) to *VinpowerCronusDrive1* (it will auto populate the CLI fields *do not* change these) and then press *Configure Drive*:
+
+![](./img/dBpaBatchripperCronusConfig2.png)
 
 If all went well the drive is now moved to the *Configured Drives* section on the opening screen. Press *OK* to close *Batch Ripper - Configuration*.
 
 ## Configure general settings
+Now the following window appears:
 
 Locate the *dBpoweramp* item in the Windows Start Menu, and launch the *CD Ripper* application, as shown below: 
 
