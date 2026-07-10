@@ -1,9 +1,15 @@
 #! /usr/bin/env python
 """Shared configuration constants"""
 
+# Application
 version = ""
+
+# Disc Robot
+driverScript  = ""
 cdDriveLetter = ""
-cdDeviceName = ""
+comPort       = ""
+comSpeed      = ""
+
 reportFormatString = ""
 cdInfoExe = ""
 prebatchExe = ""
