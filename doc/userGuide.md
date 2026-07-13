@@ -6,7 +6,7 @@ This User Guide assumes that Iromlab and its dependencies have been installed an
 
 Before launching Iromlab, switch on the Nimbie disc robot and wait about 30 seconds for it to initialise (if you don't do this Iromlab will not recognise the Nimbie's optical drive, and exit with an error message). Then double-click on Iromlab's Desktop icon. If all goes well the following window appears:
 
-![](./img/iromStartup.png)
+![](./img/iromlabGUIbatchimport1.png)
 
 Upon startup, you have three options:
 
@@ -18,7 +18,7 @@ Upon startup, you have three options:
 
 Let's create a new batch. Click on the top-left *New* button. Iromlab will respond with:
 
-![](./img/iromCreatedBatch.png)
+![](./img/iromlabGUIbatchimport2.png)
 
 Now press *OK*. The Iromlab window now changes to: 
 
@@ -43,7 +43,7 @@ We start by entering the required fields:
 * *PPN* is the PPN that is associated with the carrier (here: *155658050*).
 * Leave *Volume number* at the default value of *1* (the assignment of volume numbers and how they are related to carrier type is explained further below).
 
-Now press the *Submit* button. Iromlab now tries to look up up the entered *PPN* in the catalogue. If a matching record is found it will display the corresponding title, and ask for confirmation:
+Now press the *Submit Title* button. Iromlab now tries to look up up the entered *PPN* in the catalogue. If a matching record is found it will display the corresponding title, and ask for confirmation:
 
 ![](./img/iromConfirmTitle.png)
 
@@ -75,11 +75,11 @@ You can add new discs while the Nimbie is busy processing a disc; in fact you ca
 
 ## Finalize a batch
 
-When you're done entering new discs, press the *Finalize* button at the top of the Iromlab window. This will trigger a confirmation dialog:
+When you're done entering new discs, press the *Run Batch* button at the top of the Iromlab window. This will trigger a confirmation dialog:
 
 ![](./img/finalize.png)
 
-Then press *Yes*. Iromlab now adds a special "End Of Batch" job to the queue. The *Submit* button will now be deactivated, you you won't be able to add new  discs from this point onward: 
+Then press *Yes*. Iromlab now adds a special "End Of Batch" job to the queue. The *Submit Title* button will now be deactivated, you you won't be able to add new  discs from this point onward: 
 
 ![](./img/postFinalize.png)
 
@@ -107,7 +107,7 @@ By default, Iromlab starts processing discs shortly after the first disc has bee
 
     <startOnFinalize>False</startOnFinalize>
 
-If *startOnFinalize* is activated like this, processing is delayed until the user presses the *Finalize* button.
+If *startOnFinalize* is activated like this, processing is delayed until the user presses the *Run Batch* button.
 
 ## enableSocketAPI option
 
@@ -141,6 +141,23 @@ For discs that are not part of the KB collection, it is recommended to set the *
 With this setting, the *PPN* widget in the Iromlab interface is replaced by a *Title* entry widget. You can use it to manually enter a title (or other description) for each disc:
 
 ![](./img/iromTitlewidget.png)
+
+## Upload job details from a CSV file
+
+You can import a CSV job file using the *Import Jobs* function to enable quick loading of jobs, or creating large batches with ease.
+
+The CSV file must have the following three headers - "PPN", "title", "volumeNo" - and only contain rows with data. Iromlab will use the 'title' as the job name and create new job folders based on this name (titles should be unique, however Iromlab will ensure each title is unique and amend as nessisary). Discs will be processed by your disc robot top down, so the first data row should be the first disc your machine will process and you will need to load appropriatly.
+
+![](./img/iromlabGUIbatchimport_CSVa.png)
+
+To load your CSV, create a new batch and select the *Import Jobs* button and navigate to the CSV file in your file directory. The CSV will be processed with a one second delay between rows, this ensures that Iromlab's time-based processing works correctly. A green bar will display as each job is loaded and the log window will display "INFO: CSV import complete" when all jobs are entered.
+
+![](./img/iromlabGUIbatchimport4.png)
+
+You can use the *Clear Jobs* button to quickly remove all jobs (created by CSV or manually) if an error is detected (very helpful if you realise the discs have been loaded incorrectly!).
+
+Select *Run Batch* as normal to begin processing your batch as normal.
+
 
 ## The batch manifest
 
