@@ -15,12 +15,24 @@ import pythoncom
 import wmi
 import _thread as thread
 from . import config
-from . import drivers
 from . import cdinfo
 from . import isobuster
 from . import dbpoweramp
 from . import verifyaudio
 from . import mdo
+
+# ── Load Nimbie/Cronus Drivers ────────────────────────────────────────────────────────────
+""" Allows for the setting of hardware in the config file and expansion for other hardware support """
+
+def _loadDriver():
+    """ Sets the drivers to the machine type indicated in the config XML """
+    script = getattr(config, "driverScript", "Nimbie")
+    if script == "Nimbie":
+        return importlib.import_module(".drivers_nimbie", package=__package__)
+    elif script == "Cronus":
+        return importlib.import_module(".drivers_cronus", package=__package__)
+    else:
+        raise ValueError("Unknown driverScript: {}".format(script))
 
 def mediumLoaded(driveName):
     """Returns True if medium is loaded (also if blank/unredable), False if not"""
@@ -102,6 +114,9 @@ def checksumDirectory(directory):
 
 def processDisc(carrierData):
     """Process one disc / job"""
+
+    # Calls the correct drivers as set in config
+    drivers = _loadDriver()
 
     jobID = carrierData['jobID']
     PPN = carrierData['PPN']
