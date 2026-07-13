@@ -35,7 +35,6 @@ from .kbapi import sru
 from .socketserver import server
 from . import cdworker
 from . import cdinfo
-from .preferences import PreferencesDialog, load_prefs
 from .shared import sanitise_filename
 
 
@@ -505,11 +504,6 @@ class carrierEntry(tk.Frame):
         self.carrierNumber = 0
         logging.info("Cleared {} job file(s)".format(deleted))    
 
-    # ── Preferences ───────────────────────────────────────────────────────────
-
-    def on_preferences(self, event=None):
-        PreferencesDialog(self.root)
-
     # ── Logging ───────────────────────────────────────────────────────────────
 
     def setupLogger(self):
@@ -614,11 +608,12 @@ class carrierEntry(tk.Frame):
         # Disable finalise button on startup
         self.bFinalise.config(state='disabled')
 
-        # Row 2: small preferences button (right-aligned)
-        self.bPreferences = tk.Button(self, text="Batch Preferences", height=1,
-                                      command=self.on_preferences)
-        self.bPreferences.grid(column=3, row=2, sticky='e', padx=6, pady=2)
-        
+        # Row 2: small preferences button (right-aligned) - wip
+        # self.bPreferences = tk.Button(self, text="Batch Preferences", height=1,
+        #                              command=self.on_preferences)
+        # self.bPreferences.grid(column=3, row=2, sticky='e', padx=6, pady=2)
+
+        ttk.Separator(self, orient='horizontal').grid(column=0, row=2, columnspan=4, sticky='ew') # padding spacer for future preferences button (above)
         ttk.Separator(self, orient='horizontal').grid(column=0, row=3, columnspan=4, sticky='ew')
 
         # Row 4: title / PPN entry
@@ -747,7 +742,7 @@ class carrierEntry(tk.Frame):
         self.bOpen.config(state='normal')
         self.bFinalise.config(state='disabled')
         self.bExit.config(state='normal')
-        self.bPreferences.config(state='normal')
+        # self.bPreferences.config(state='normal')
         self.submit_button.config(state='disabled')
         self.bLoadCSV.config(state='disabled')
         if config.enablePPNLookup:
