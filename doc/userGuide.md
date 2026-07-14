@@ -142,6 +142,10 @@ With this setting, the *PPN* widget in the Iromlab interface is replaced by a *T
 
 ![](./img/iromTitlewidget.png)
 
+Titles entered manually will pop up with a confirmation dialogue, click yes to confirm and add the title to your batch.
+
+![](./img/iromTitleconfirm.png)
+
 ## Upload job details from a CSV file
 
 You can import a CSV job file using the *Import Jobs* function to enable quick loading of jobs, or creating large batches with ease.
