@@ -6,7 +6,7 @@ This User Guide assumes that Iromlab and its dependencies have been installed an
 
 Before launching Iromlab, switch on the Nimbie disc robot and wait about 30 seconds for it to initialise (if you don't do this Iromlab will not recognise the Nimbie's optical drive, and exit with an error message). Then double-click on Iromlab's Desktop icon. If all goes well the following window appears:
 
-![](./img/iromlabGUIbatchimport1.png)
+![](./img/iromStartup.png)
 
 Upon startup, you have three options:
 
@@ -18,7 +18,7 @@ Upon startup, you have three options:
 
 Let's create a new batch. Click on the top-left *New* button. Iromlab will respond with:
 
-![](./img/iromlabGUIbatchimport2.png)
+![](./img/iromCreatedBatch.png)
 
 Now press *OK*. The Iromlab window now changes to: 
 
