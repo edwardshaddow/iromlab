@@ -36,9 +36,9 @@ from .socketserver import server
 from . import cdworker
 from . import cdinfo
 from .shared import sanitise_filename
+from .preferences import PreferencesDialog, load_prefs # for bulk extract function
 
-
-__version__ = '1.0.10b7'
+__version__ = '1.0.3'
 config.version = __version__
 
 class carrierEntry(tk.Frame):
@@ -504,6 +504,11 @@ class carrierEntry(tk.Frame):
         self.carrierNumber = 0
         logging.info("Cleared {} job file(s)".format(deleted))    
 
+    # ── Batch Preferences ───────────────────────────────────────────────────────────
+
+    def on_preferences(self, event=None):
+        PreferencesDialog(self.root)
+
     # ── Logging ───────────────────────────────────────────────────────────────
 
     def setupLogger(self):
@@ -608,10 +613,10 @@ class carrierEntry(tk.Frame):
         # Disable finalise button on startup
         self.bFinalise.config(state='disabled')
 
-        # Row 2: small preferences button (right-aligned) - wip
-        # self.bPreferences = tk.Button(self, text="Batch Preferences", height=1,
-        #                              command=self.on_preferences)
-        # self.bPreferences.grid(column=3, row=2, sticky='e', padx=6, pady=2)
+        # Row 2: small preferences button (right-aligned)
+        self.bPreferences = tk.Button(self, text="Batch Preferences", height=1,
+                                      command=self.on_preferences)
+        self.bPreferences.grid(column=3, row=2, sticky='e', padx=6, pady=2)
 
         ttk.Separator(self, orient='horizontal').grid(column=0, row=2, columnspan=4, sticky='ew') # padding spacer for future preferences button (above)
         ttk.Separator(self, orient='horizontal').grid(column=0, row=3, columnspan=4, sticky='ew')
