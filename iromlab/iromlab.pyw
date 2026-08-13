@@ -747,7 +747,7 @@ class carrierEntry(tk.Frame):
         self.bOpen.config(state='normal')
         self.bFinalise.config(state='disabled')
         self.bExit.config(state='normal')
-        # self.bPreferences.config(state='normal')
+        self.bPreferences.config(state='normal')
         self.submit_button.config(state='disabled')
         self.bLoadCSV.config(state='disabled')
         if config.enablePPNLookup:
@@ -939,7 +939,10 @@ def getConfiguration():
             config.enableSocketAPI = False
     except:
         pass
-
+        
+    # Load GUI preferences (may override rootDir)
+    load_prefs()
+    
     # Normalise all file paths
     config.rootDir = os.path.normpath(config.rootDir)
     config.tempDir = os.path.normpath(config.tempDir)
