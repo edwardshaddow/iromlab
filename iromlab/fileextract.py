@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 """Post-batch ISO file extraction using IsoBuster.
 Called as a module function from cdworker.py.
+Author: Orlando Blitz-Cokis
 """
 
 import os
