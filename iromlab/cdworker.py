@@ -20,6 +20,7 @@ from . import isobuster
 from . import dbpoweramp
 from . import verifyaudio
 from . import mdo
+from . import fileextract
 
 # ── Load Nimbie/Cronus Drivers ────────────────────────────────────────────────────────────
 """ Allows for the setting of hardware in the config file and expansion for other hardware support """
@@ -452,6 +453,7 @@ def quitIromlab():
     # This triggers a KeyboardInterrupt in the main thread
     thread.interrupt_main()
 
+# ── Main worker loop ──────────────────────────────────────────────────────────
 
 def cdWorker():
     """Worker function that monitors the job queue and processes the discs in FIFO order"""
@@ -539,11 +541,20 @@ def cdWorker():
                 os.remove(jobOldest)
                 shutil.rmtree(config.jobsFolder)
                 shutil.rmtree(config.jobsFailedFolder)
-                logging.info('*** End Of Batch job found, closing batch ***')
+                logging.info('*** End Of Batch ***')
+
+                if config.runFileExtraction:
+                # Runs file extraction for ISO images if set in preferences
+                    logging.info("*** Running post-batch file extraction ***")
+                    fileExtract.extractIsos(config.batchFolder,
+                                             config.isoBusterExe)
+                    logging.info("*** File Extraction Complete ***")
+                
                 # Wait 2 seconds to avoid race condition between logging and KeyboardInterrupt
                 time.sleep(2)
                 # This triggers a KeyboardInterrupt in the main thread
                 thread.interrupt_main()
+            
             else:
                 # Set up dictionary that holds carrier data
                 carrierData = {}
