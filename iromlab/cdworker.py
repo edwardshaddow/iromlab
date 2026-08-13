@@ -546,7 +546,7 @@ def cdWorker():
                 if config.runFileExtraction:
                 # Runs file extraction for ISO images if set in preferences
                     logging.info("*** Running post-batch file extraction ***")
-                    fileExtract.extractIsos(config.batchFolder,
+                    fileextract.extractIsos(config.batchFolder,
                                              config.isoBusterExe)
                     logging.info("*** File Extraction Complete ***")
                 
