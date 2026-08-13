@@ -1,40 +1,56 @@
 #! /usr/bin/env python
-"""Shared configuration constants"""
+"""
+Global configuration state for Iromlab.
+All values are defaults; getConfiguration() in iromlab.py overwrites them from config.xml at startup.
+"""
 
 # Application
 version = ""
 
-# Disc Robot
+# Batch state (runtime only)
+batchFolder      = ""
+batchManifest    = ""
+jobsFolder       = ""
+jobsFailedFolder = ""
+quitFlag         = False
+batchIsOpen      = False
+readyToStart     = False
+finishedBatch    = False
+
+# General
+prefixBatch       = ""
+rootDir           = ""
+tempDir           = ""
+secondsToTimeout  = ""
+audioFormat       = ""
+
+# Robot
 driverScript  = ""
 cdDriveLetter = ""
 comPort       = "COM1" # default for Cronus
 comSpeed      = "9600" # default for Cronus
 
-reportFormatString = ""
-cdInfoExe = ""
-prebatchExe = ""
-loadExe = ""
-unloadExe = ""
-rejectExe = ""
-isoBusterExe = ""
+# Executable paths
+prebatchExe            = ""
+loadExe                = ""
+unloadExe              = ""
+rejectExe              = ""
+isoBusterExe           = ""
 dBpowerampConsoleRipExe = ""
-shntoolExe = ""
-flacExe = ""
-tempDir = ""
-rootDir = ""
-batchFolder = ""
-batchManifest = ""
-jobsFolder = ""
-secondsToTimeout = ""
-prefixBatch = ""
-audioFormat = ""
-jobsFailedFolder = ""
+shntoolExe             = ""
+flacExe                = ""
+cdInfoExe              = ""
+
+# Processing
+extractAudio       = False
+runFileExtraction  = False
+enablePPNLookup    = True
+enableSocketAPI    = False
+startOnFinalize    = False
+
+# Network
 socketHost = "127.0.0.1"
 socketPort = "65432"
-startOnFinalize = False
-enablePPNLookup = True
-enableSocketAPI = False
-quitFlag = False
-batchIsOpen = False
-readyToStart = False
-finishedBatch = False
+
+# IsoBuster report format
+reportFormatString = ""
