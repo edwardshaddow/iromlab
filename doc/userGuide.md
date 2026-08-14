@@ -226,6 +226,7 @@ For each disc, Iromlab creates a folder in the batch folder. The name of each fo
 * *xxx.wav* / *xxx.flac* - audio files in WAV or FLAC format (only if disc contains audio).
 * *dbpoweramp.log* - dbpoweramp log file (only if disc contains audio).
 * *checksums.sha512* - checksum file with SHA-512 hashes of all the above files in this directory.
+* *xxx folder* - folder containing contents of ISO image (only if file extract preference is ticked).
 
 ## How to use the Volume number field
 
