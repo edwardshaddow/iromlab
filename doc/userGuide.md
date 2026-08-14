@@ -117,7 +117,6 @@ The *enableSocketAPI* option allows one to send *PPN* or *Title* values to the c
 
 When this option is activated, Iromlab launches a server that listens on a user-defined host address (default: localhost) and port number (default: 65432) combination for incoming requests. This is particularly useful if the *PPN* identifiers or titles are entered from some external database application. In order to communicate with Iromlab, this application needs to be able to send socket requests. This [Iromlab socket client demo](https://github.com/KBNLresearch/iromlab-socketclient) shows how to do this in Python.
 
-
 ## All discs of a PPN must be in same batch
 
 All discs that belong to one *PPN* must *always* be in the same batch. This is because the batches must be processed into ingest-ready Submission Information Packages (SIPs) further down the processing chain, and all discs that are part of a *PPN* are grouped into one SIP. This doesn't work if a *PPN* is spread across multiple batches.  
@@ -145,6 +144,24 @@ With this setting, the *PPN* widget in the Iromlab interface is replaced by a *T
 Titles entered manually will pop up with a confirmation dialogue, click yes to confirm and add the title to your batch.
 
 ![](./img/iromTitleconfirm.png)
+
+## File extraction settings
+
+In addition to creating disk images, Iromlab can extract all files and folders from ISO files after completing a batch.
+
+To enable this process, **before** you create a new batch click the **Batch Preferences** button.
+![](./img/batchPreferencesGUI.png)
+
+Select root folder path where Iromlab creates batch files (rootDir in the config setup).
+![](./img/batchPreferencesDialogue.png)
+
+Tick "Extract files from ISO images" and click *Save*.
+
+Create a new batch and proceed as normal. Once the batch imaging has completed, Iromlab will attempt to extract all files and folders from any ISO images created. These will be saved in the disc's folder and named after the disc label.
+
+Note that this function will run on _all_ ISO files in a batch. If you only want to extract files from certain discs, create a separate batch for them using these preferences.
+
+To disable this feature, before starting a new batch open the *Batch Preferences* dialog and untick "Extract files from ISO images".
 
 ## Upload job details from a CSV file
 
