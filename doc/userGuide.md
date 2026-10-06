@@ -155,11 +155,11 @@ To enable this process, **before** you create a new batch click the **Batch Pref
 Select root folder path where Iromlab creates batch files (rootDir in the config setup).
 ![](./img/batchPreferencesDialogue.png)
 
-Tick "Extract files from ISO images" and click *Save*.
+Tick "Extract files from ISO and BIN images" and click *Save*.
 
-Create a new batch and proceed as normal. Once the batch imaging has completed, Iromlab will attempt to extract all files and folders from any ISO images created. These will be saved in the disc's folder and named after the disc label.
+Create a new batch and proceed as normal. Once the batch imaging has completed, Iromlab will attempt to extract all files and folders from any ISO or BIN images created. These will be saved in the disc's folder and named after the disc label.
 
-Note that this function will run on _all_ ISO files in a batch. If you only want to extract files from certain discs, create a separate batch for them using these preferences.
+Note that this function will run on _all_ ISO and BIN files in a batch. If you only want to extract files from certain discs, create a separate batch for them using these preferences.
 
 To disable this feature, before starting a new batch open the *Batch Preferences* dialog and untick "Extract files from ISO images".
 
@@ -221,12 +221,13 @@ For each disc, Iromlab creates a folder in the batch folder. The name of each fo
 
 * *cd-info.log* - output of the cd-info tool. Contains general information about the disc, including its sector layout.
 * *xxx.iso* - ISO image (only if disc contains a data session).
+* *xxx.bin* - BIN/CUE image (only if disc contains multisession data)
 * *isobuster.log* - log file with Isobuster log error code; see *Log Error* section in the [Isobuster documentation](https://www.isobuster.com/help/use_of_command_line_parameters) (only if disc contains a data session).
 * *isobuster-report.xml* - report file in [Digital Forensics XML](https://en.wikipedia.org/wiki/Digital_Forensics_XML) format; includes listing of all files on the disc (only if disc contains a data session).
 * *xxx.wav* / *xxx.flac* - audio files in WAV or FLAC format (only if disc contains audio).
 * *dbpoweramp.log* - dbpoweramp log file (only if disc contains audio).
 * *checksums.sha512* - checksum file with SHA-512 hashes of all the above files in this directory.
-* *xxx folder* - folder containing contents of ISO image (only if file extract preference is ticked).
+* *xxx folder* - folder containing contents of ISO/BIN image (only if file extract preference is ticked).
 
 ## How to use the Volume number field
 
