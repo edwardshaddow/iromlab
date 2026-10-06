@@ -88,7 +88,7 @@ class PreferencesDialog(tk.Toplevel):
         row1.pack(fill="x", padx=10, pady=2)
         tk.Checkbutton(
             row1,
-            text="Extract files from ISO images",
+            text="Extract files from ISO and BIN images",
             variable=self._extract_var
         ).pack(side="left")
  
