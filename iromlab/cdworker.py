@@ -544,9 +544,11 @@ def cdWorker():
                 logging.info('*** End Of Batch ***')
 
                 if config.runFileExtraction:
-                # Runs file extraction for ISO images if set in preferences
+                # Runs file extraction for ISO/BIN images if set in preferences
                     logging.info("*** Running post-batch file extraction ***")
-                    fileextract.extractIsos(config.batchFolder,
+                    fileExtract.extractIsos(config.batchFolder,
+                                             config.isoBusterExe)
+                    fileExtract.extractBins(config.batchFolder,
                                              config.isoBusterExe)
                     logging.info("*** File Extraction Complete ***")
                 
