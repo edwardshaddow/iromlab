@@ -35,6 +35,31 @@ def _loadDriver():
     else:
         raise ValueError("Unknown driverScript: {}".format(script))
 
+# ── Disc Classifications ───────────────────────────────────────────────────────
+
+AUDIO_ONLY     = "AUDIO_ONLY" # Will rip audio via dBpoweramp
+DATA_SINGLE    = "DATA_SINGLE" # Will create an ISO via IsoBuster
+DATA_MULTI     = "DATA_MULTI" # Will create a BIN/CUE via IsoBuster
+DVD            = "DVD" # Will create an ISO via IsoBuster
+CD_EXTRA       = "CD_EXTRA" # Will rip session 1 audio via dBpoweramp and create ISO of session 2 via IsoBuster
+MIXED_MODE     = "MIXED_MODE" # Will create a Raw2User Data ISO/CUE via IsoBuster
+CD_INTERACTIVE = "CD_INTERACTIVE" # Will create a RAW BIN/ISO via IsoBuster
+BLANK          = "BLANK" # Regjects blank disk
+UNKNOWN        = "UNKNOWN" # Regjects unknown disk
+
+
+def classifyDisc(ci):
+    if ci.get("cdInteractive"):    return CD_INTERACTIVE
+    if ci.get("cdExtra"):          return CD_EXTRA
+    if ci.get("mixedMode"):        return MIXED_MODE
+    if ci.get("containsAudio") and not ci.get("containsData"): return AUDIO_ONLY
+    if ci.get("containsData")  and not ci.get("containsAudio"):
+        return DATA_MULTI if ci.get("multiSession") else DATA_SINGLE
+    if not ci.get("containsAudio") and not ci.get("containsData"): return BLANK
+    return UNKNOWN
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
+
 def mediumLoaded(driveName):
     """Returns True if medium is loaded (also if blank/unredable), False if not"""
 
@@ -112,17 +137,80 @@ def checksumDirectory(directory):
 
     return wroteChecksums
 
+# ── Audio ripping workflow ─────────────────────────────────────────────────────────────
 
-def processDisc(carrierData):
-    """Process one disc / job"""
+def _ripAudio(dirDisc, success, reject):
+    logging.info("*** Ripping audio ***")
+    result = dbpoweramp.consoleRipper(dirDisc)
+    # Rip audio using dBpoweramp console ripper
+    logging.info("dBpoweramp command: {}".format(result["cmdStr"]))
+    logging.info("dBpoweramp status:  {}".format(result["status"]))
+    logging.info("dBpoweramp log:\n{}".format(result["log"]))
 
-    # Calls the correct drivers as set in config
-    drivers = _loadDriver()
+    if str(result["status"]) != "0":
+        success = False
+        reject = True
+        logging.error("dBpoweramp exited with error(s)")
 
+    # Verify that created audio files are not corrupt (using shntool / flac)
+    logging.info("*** Verifying audio ***")
+    audioHasErrors, audioErrorsList = verifyaudio.verifyCD(dirDisc, config.audioFormat)
+    logging.info(''.join(['audioHasErrors: ', str(audioHasErrors)]))
+    
+    if audioHasErrors:
+        success = False
+        reject = True
+        logging.error("Audio verification returned error(s)")
+
+    return success, reject
+
+
+# ── IsoBuster result checks ───────────────────────────────────────────────────
+    """Organises logging for disc processing actions"""
+
+def _checkIso(result, success, reject):
+    logging.info("isobuster command:   {}".format(result["cmdStr"]))
+    logging.info("isobuster status:    {}".format(result["status"]))
+    logging.info("volumeIdentifier:    {}".format(result["volumeIdentifier"]))
+    logging.info("isolyzerSuccess:     {}".format(result["isolyzerSuccess"]))
+    logging.info("imageTruncated:      {}".format(result["imageTruncated"]))
+
+    if result["log"].strip() != "0":
+        success = False
+        reject = True
+        logging.error("IsoBuster exited with error(s)")
+    elif not result["isolyzerSuccess"]:
+        success = False
+        reject = True
+        logging.error("Isolyzer reported failure")
+    elif result["imageTruncated"]:
+        success = False
+        reject = True
+        logging.error("Isolyzer detected truncated image")
+    return success, reject
+
+
+def _checkBincue(result, success, reject):
+    logging.info("isobuster command: {}".format(result["cmdStr"]))
+    logging.info("isobuster status:  {}".format(result["status"]))
+    if result["log"].strip() != "0":
+        success = False
+        reject = True
+        logging.error("IsoBuster exited with error(s) during BIN/CUE extraction")
+    return success, reject
+
+
+# ── Disc processing ───────────────────────────────────────────────────────────
+
+def processDisc(carrierData, drivers):
+    """Process one disc / job based on disc classification"""
+    
     jobID = carrierData['jobID']
     PPN = carrierData['PPN']
-
-    logging.info(''.join(['### Job identifier: ', jobID]))
+    title = carrierData["title"]
+    volumeNo = carrierData["volumeNo"]
+    
+    logging.info(''.join(['### Job: ', jobID]))
     logging.info(''.join(['PPN: ', carrierData['PPN']]))
     logging.info(''.join(['Title: ', carrierData['title']]))
     logging.info(''.join(['Volume number: ', carrierData['volumeNo']]))
