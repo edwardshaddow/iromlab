@@ -10,17 +10,19 @@ import time
 import glob
 import csv
 import hashlib
+import stat
 import logging
+import importlib
+import _thread as thread
 import pythoncom
 import wmi
-import _thread as thread
 from . import config
 from . import cdinfo
 from . import isobuster
 from . import dbpoweramp
 from . import verifyaudio
 from . import mdo
-from . import fileextract
+from . import fileExtract
 
 # ── Load Nimbie/Cronus Drivers ────────────────────────────────────────────────────────────
 """ Allows for the setting of hardware in the config file and expansion for other hardware support """
