@@ -112,7 +112,7 @@ def checksumDirectory(directory):
     return wroteChecksums
 
 
-def processDisc(carrierData):
+def processDisc(carrierData, drivers):
     """Process one disc / job"""
 
     # Calls the correct drivers as set in config
@@ -456,6 +456,8 @@ def quitIromlab():
 def cdWorker():
     """Worker function that monitors the job queue and processes the discs in FIFO order"""
 
+    drivers = _loadDriver()
+    
     # Initialise 'success' flag to prevent run-time error in case user
     # finalizes batch before entering any carriers (edge case)
     success = True
@@ -553,7 +555,7 @@ def cdWorker():
                 carrierData['volumeNo'] = jobList[3]
 
                 # Process the carrier
-                success = processDisc(carrierData)
+                success = processDisc(carrierData, drivers)
                 #success = processDiscTest(carrierData)
 
             if success and not endOfBatchFlag:
