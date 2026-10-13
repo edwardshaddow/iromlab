@@ -134,11 +134,12 @@ def extractData(writeDirectory, session, dataTrackLSNStart):
     return dictOut
 
 #Extract Raw (bin/cue)
-def extractRawData(writeDirectory):
+def extractRawData(writeDirectory, dataTrackLSNStart):
     """Extract data to raw image"""
 
     # Temporary name for image file; base name
     binFileTemp = os.path.join(writeDirectory, "disc.bin")
+    cueFileTemp = os.path.join(writeDirectory, "disc.cue")
     logFile = os.path.join(writeDirectory, "isobuster.log")
     reportFile = os.path.join(writeDirectory, "isobuster-report.xml")
     
@@ -227,7 +228,9 @@ def extractRawData(writeDirectory):
         # Any spaces in volumeLabel are replaced with dashes
         try:
             binFile = os.path.join(writeDirectory, volumeLabel.replace(' ', '-') + '.bin')
-            os.rename(binFileTemp, rtuFile)
+            cueFile = os.path.join(writeDirectory, volumeLabel.replace(' ', '-') + '.cue')
+            os.rename(binFileTemp, binFile)
+            os.rename(cueFileTemp, cueFile)
         except:
             pass
 
@@ -243,8 +246,8 @@ def extractRawData(writeDirectory):
     
     return dictOut
 
-#Extract MultiSession ISO/Cue
-def extractMixData(writeDirectory, session, dataTrackLSNStart):
+#Extract Mixed Data disc to ISO/CUE
+def extractMixData(writeDirectory, dataTrackLSNStart):
     """Extract data from Mixed Mode CD to Raw2user ISO/CUE image"""
 
     # Temporary name for image file; base name
