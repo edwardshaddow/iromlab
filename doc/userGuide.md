@@ -197,13 +197,15 @@ jobID,PPN,volumeNo,title,volumeID,success,containsAudio,containsData,cdExtra,mix
 9. *cdExtra* - True/False flag that indicates if the disc is a [*cd-Extra*](https://en.wikipedia.org/wiki/Blue_Book_(CD_standard)) (Blue Book) disc (detected by cd-info)
 10. *mixedMode* - True/False flag that indicates if the disc is a [*mixed-mode*](https://en.wikipedia.org/wiki/Mixed_Mode_CD) disc (detected by cd-info)
 11. *cdInteractive* - True/False flag that indicates if the disc is a [Phiilip *cd-interactive*](https://en.wikipedia.org/wiki/Philips_CD-i) disc (detected by cd-info)
+12. *isoFileformat* - True/False flag that indicates the disc contains an ISO 9660 file format volume (detected by cd-info)
+13. *jolietFileformat* - True/False flag that indicates the disc contains a Joliet file format volume (detected by cd-info)
 
 The first line of the file contains column headers.
 
 Example:
 
-    jobID,PPN,volumeNo,title,volumeID,success,containsAudio,containsData,cdExtra,mixedMode,cdInteractive
-    8a7ea9f0-0a65-11e7-b41c-00237d497a29,155658050,1,(Bijna) alles over bestandsformaten,bformat,True,False,True,False,False,False
+    jobID,PPN,volumeNo,title,volumeID,success,containsAudio,containsData,cdExtra,mixedMode,cdInteractive,isoFileformat, jolietFileformat
+    8a7ea9f0-0a65-11e7-b41c-00237d497a29,155658050,1,(Bijna) alles over bestandsformaten,bformat,True,False,True,False,False,False,True,False
 
 ## The log file
 
