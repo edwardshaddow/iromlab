@@ -1,62 +1,111 @@
-See README.libcdio for installation instructions.
+This directory contains some simple examples of the use of the libcdio
+library.
 
-The libcdio package contains a library for CD-ROM and CD image
-access. Applications wishing to be oblivious of the OS- and
-device-dependent properties of a CD-ROM or of the specific details of
-various CD-image formats may benefit from using this library.
+One might also possibly find useful C code among the regression tests
+(directory test), e.g. testbincue.c, testdefault.c, testiso9660.c,
+testparanoia.c, or testtoc.c
 
-A library for working with ISO-9660 filesystems libiso9660 is
-included. A generic interface for issuing MMC (multimedia commands) is
-also part of the libcdio library.
+Larger more-complicated examples are the cd-drive, cd-info, cd-read,
+cdda-player, iso-info and iso-read programs in the src directory. 
 
-Also included is a library for working with ISO-9660 filesystems.
+And going further there's the cd-paranoia program (in
+src/cd-paranoia), and "real-world' code in the xine VCD plugin, or the
+vlc CD-DA plugin which are part of those distributions.
 
-The CD-DA error/jitter correction library from cdparanoia
-(http://www.xiph.org/paranoia) is included as a separate library
-licenced under GPL v2.
+In some cases you may have to make small changes to compile these
+programs. For example, compiling using Solaris's C compiler with
+largefile support on a 64-bit system, may require changing C headers.
 
-Some support for disk image types like CDRWin's BIN/CUE format,
-cdrdao's TOC format, and Nero's NRG format are available. Therefore,
-applications that use this library also have the ability to read disc
-images as though they were CD's.
+Descriptions of the programs in this example directory are as
+follows...
 
-The library is written in C, however there are OO C++, Perl, Python
-and Ruby wrappers to interface to the library. However C++ is the only
-one that is bundled with this package, and the interfaces provide only
-a subset of the full features of the library.
+audio.c:     Sample program to show audio controls.
 
-Also included in the libcdio package are a number of utility programs:
+cdchange.c:  A program to test if a CD has been changed since the last
+	     change test.
 
-* cd-info  - displays CD information: number of tracks, CD-format and 
-	     if possible basic information about the format.  If libcddb
-             (http://libcddb.sourceforge.net) is available, the cd-info
-             program will display CDDB matches on CD-DA discs. And if a
-             new enough version of libvcdinfo is available (from the
-	     vcdimager project), then cd-info shows basic VCD information.
+cdio-eject.c: a stripped-down "eject" command to open or close a CDROM
+             tray
 
-* cd-read  - performs low-level block reading of a CD or CD image, 
+cdtext.c:    A program to show CD-Text and CD disc mode info.
 
-* iso-info - displays ISO-9660 information from an ISO-9660 image, 
+cdtext-raw.c:    A program to show CD-Text parsing from binary files.
 
-* iso-read - extracting files from an ISO-9660 image, a version of the
-             CD-DA extraction tool cdparanoia which corrects for
-             CD-ROM jitter, and a simple curses-based CD player,
-             cdda-player using the analog CD-ROM output.
+device.c:    A program to show drivers installed and what the default
+             CD-ROM drive is. See also corresponding C++ programs of similar
+             names.
 
-* cd-paranoia - port of cdparanoia (CD-DA jitter and error correction)
-                using libcdio back-end CD-reading. 
+discid.c:    http://sourceforge.net/projects/discid/ using libcdio:
+	     a small program to calculate the disc-ID for audio
+	     compact discs. The disc-ID can be used to query info
+	     (tracks, title, interpret) about compact audio discs from
+	     a CDDB-Server.
 
-There is very limited low-level support for MMC commands on some
-platforms. Using MMC writing can be done. However there is currently
-little higher level-support for writing. Other libraries like libburn,
-libdi, libscg, or libdvdread may be helpful.
+drives.c:    A program to show drivers installed and what the default
+	     CD-ROM drive is and what CD drives are available.
 
-Some of the projects using libcdio are the Video CD authoring and
-ripping tools VCDImager (http://vcdimager.org), a navigation-capable
-Video CD plugin and CD-DA plugins for the media players xine
-(http://xinehq.de), videolan's vlc (http://videolan.org), media
-players mplayerxp (http://mplayerxp.sourceforge.net/) and gmerlin
-(http://gmerlin.sourceforge.net), kiso, a KDE GUI for creating,
-extracting and editing ISO-9600 images (http://kiso.sourceforge.net),
-and a Samba vfs module that allows exporting a CD without mounting it
-(http://ontologistics.net/OpenSource/Samba/index.php).
+eject.c:     A program eject a CD from a CD-ROM drive and then close the door
+	     again.
+
+extract.c:   Extract the full contents of either an UDF or ISO9660 image file.
+
+isofile.c:   A program to show using libiso9660 to extract a file from an
+	     ISO-9660 image.
+
+isofile2.c:  A program to show using libiso9660 to extract a file
+	     from a CDRWIN cue/bin CD image.
+
+isofuzzy.c : A program showing fuzzy ISO-9660 detection/reading.
+
+isolist.c:   A program to show using libiso9660 to list files in a
+	     directory of an ISO-9660 image and give basic iso9660 
+	     information.
+
+isolsn.c:    A program to show using libiso9660 to get the file 
+	     path for a given LSN.
+
+mmc1.c:      A program to show issuing a simple MMC command (INQUIRY).
+
+mmc2.c:      A more involved MMC command to list features from 
+	     a MMC GET_CONFIGURATION command.
+
+mmc2a.c:     Show MODE_SENSE page 2A paramaters:
+	     CD/DVD Capabilities and Mechanical Status Page
+
+mmc3.c       Another simple program to show use of SCSI MMC interface. 
+             Is basically the the libdio scsi_mmc_get_hwinfo() routine.
+
+paranoia:    A program to show using CD-DA paranoia (a library for jitter
+	     detection and audio-read error correction). This program uses
+	     an interface compatible (mostly) with cdparanoia. It looks for
+	     a CD-ROM with an audio CD in it and rips up to the first 300 
+             sectors of track 1 to file track01s.wav.
+
+paranoia2:   Another program to show using CD-DA paranoia using a more
+	     libcdio-oriented initialization. Probably more suited to
+	     things that otherwise use libcdio such as media players 
+	     (e.g. for getting CDDB or CD-Text info)
+
+sample3.c:   A simple program to show the use of cdio_guess_cd_type().
+             Figure out the kind of CD image we've got.
+
+sample4.c:   A slightly improved sample3 program: we handle cdio logging
+             and take an optional CD-location.
+
+tracks.c:    A program to list track numbers and logical sector
+	     numbers of a Compact Disc using libcdio.
+
+udf1.c:      A program to show using libudf to list files in a directory of
+	     an UDF image.
+
+udf2.c:      A program to show using libudf to extract a file from
+	     an UDF image.
+
+udffile.c    A program to show using libudf to extract a file.
+
+Many of the above programs can be compiled in C++. See that directory
+for C++ examples which include some of the above.
+
+Some of these programs are also used in testing. When this occurs,
+output is prepended with -- so it can be filtered out by Ruby program
+make-check-filter.rb when running "make check-short".
