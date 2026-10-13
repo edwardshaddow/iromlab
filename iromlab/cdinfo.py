@@ -67,7 +67,7 @@ def getCarrierInfo(writeDirectory):
             dataTrackLSNStart = track['trackLSNStart']
 
     # Parse analysis report
-    for i in range(startIndexAnalysisReport + 1, len(outAsList), 1):
+    for i in range(startIndexAnalysisReport +1, len(outAsList), 1):
         thisLine = outAsList[i]
         if not thisLine.startswith("++"):
             analysisReport.append(thisLine)
@@ -80,7 +80,17 @@ def getCarrierInfo(writeDirectory):
     multiSession = shared.index_startswith_substring(analysisReport, "session #") != -1
     mixedMode = shared.index_startswith_substring(analysisReport, "mixed mode CD") != -1
     cdInteractive = shared.index_startswith_substring(analysisReport, "CD-Interactive") != -1
-
+    
+    # Added logic for identifying single-session mixed mode CDs
+    # Flags for presence of various file systems
+    isoFilesystem = False
+    jolietFilesystem = False
+    
+    if 'ISO 9660 filesystem' in str(analysisReport):
+        isoFilesystem = True
+    if 'joliet extension' in str(analysisReport):
+        jolietFilesystem = True
+    
     # Write cd-info output to log file
     with io.open(cdInfoLogFile, "w", encoding="utf-8") as fCdInfoLogFile:
         for line in outAsList:
@@ -96,6 +106,8 @@ def getCarrierInfo(writeDirectory):
     dictOut["cdInteractive"] = cdInteractive
     dictOut["containsAudio"] = containsAudio
     dictOut["containsData"] = containsData
+    dictOut["isoFilesystem"] = isoFilesystem
+    dictOut["jolietFilesystem"] = jolietFilesystem
     dictOut["dataTrackLSNStart"] = dataTrackLSNStart
     dictOut["status"] = status
     dictOut["stdout"] = out

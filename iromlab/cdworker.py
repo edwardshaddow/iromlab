@@ -49,12 +49,17 @@ UNKNOWN        = "UNKNOWN" # Regjects unknown disk
 
 
 def classifyDisc(ci):
+    
     if ci.get("cdInteractive"):    return CD_INTERACTIVE
     if ci.get("cdExtra"):          return CD_EXTRA
     if ci.get("mixedMode"):        return MIXED_MODE
     if ci.get("containsAudio") and not ci.get("containsData"): return AUDIO_ONLY
     if ci.get("containsData")  and not ci.get("containsAudio"):
-        return DATA_MULTI if ci.get("multiSession") else DATA_SINGLE
+        if ci.get("jolietFilesystem") and ci.get("isoFilesystem"):
+            return MIXED_MODE
+        elif ci.get("multiSession"):
+            return DATA_MULTI
+        else: DATA_SINGLE
     if not ci.get("containsAudio") and not ci.get("containsData"): return BLANK
     return UNKNOWN
 
@@ -242,6 +247,7 @@ def processDisc(carrierData, drivers):
         "containsAudio": False, "containsData": False,
         "cdExtra": False, "mixedMode": False,
         "cdInteractive": False, "multiSession": False,
+        "isoFilesystem": False, "jolietFilesystem": False,
     }
     resultIsobuster = None
 
@@ -304,12 +310,14 @@ def processDisc(carrierData, drivers):
         # Get disc info and define disc type
         logging.info("*** Running cd-info ***")
         carrierInfo = cdinfo.getCarrierInfo(dirDisc)
-        logging.info("containsAudio:  {}".format(carrierInfo["containsAudio"]))
-        logging.info("containsData:   {}".format(carrierInfo["containsData"]))
-        logging.info("cdExtra:        {}".format(carrierInfo["cdExtra"]))
-        logging.info("mixedMode:      {}".format(carrierInfo["mixedMode"]))
-        logging.info("cdInteractive:  {}".format(carrierInfo["cdInteractive"]))
-        logging.info("multiSession:   {}".format(carrierInfo["multiSession"]))
+        logging.info("containsAudio:      {}".format(carrierInfo["containsAudio"]))
+        logging.info("containsData:       {}".format(carrierInfo["containsData"]))
+        logging.info("cdExtra:            {}".format(carrierInfo["cdExtra"]))
+        logging.info("mixedMode:          {}".format(carrierInfo["mixedMode"]))
+        logging.info("cdInteractive:      {}".format(carrierInfo["cdInteractive"]))
+        logging.info("multiSession:       {}".format(carrierInfo["multiSession"]))
+        logging.info("isoFilesystem:      {}".format(carrierInfo["isoFilesystem"]))
+        logging.info("jolietFilesystem:   {}".format(carrierInfo["jolietFilesystem"]))
 
         discType = classifyDisc(carrierInfo)
         logging.info("Disc type: {}".format(discType))
@@ -331,7 +339,7 @@ def processDisc(carrierData, drivers):
         elif discType == DATA_MULTI:
             logging.info("*** Extracting multi-session data to BIN/CUE ***")
             # Create Bin/Cue image of whole disc
-            resultIsobuster = isobuster.extractRawData(dirDisc)
+            resultIsobuster = isobuster.extractRawData(dirDisc, 0)
             success, reject = _checkBincue(resultIsobuster, success, reject)
 
         elif discType == DVD:
@@ -354,7 +362,7 @@ def processDisc(carrierData, drivers):
             logging.info("*** Extracting mixed-mode disc to Raw2User ISO/CUE ***")
             # lsn = int(carrierInfo.get("dataTrackLSNStart", 0))
             # Create ISO/Cue image of whole disc
-            resultIsobuster = isobuster.extractMixData(dirDisc)
+            resultIsobuster = isobuster.extractMixData(dirDisc, 0)
             success, reject = _checkBincue(resultIsobuster, success, reject)
 
         elif discType == CD_INTERACTIVE:
@@ -418,12 +426,14 @@ def processDisc(carrierData, drivers):
 
     row = [jobID, PPN, volumeNo, title, volumeID,
            str(success),
-           str(carrierInfo.get("containsAudio",   False)),
-           str(carrierInfo.get("containsData",    False)),
-           str(carrierInfo.get("cdExtra",         False)),
-           str(carrierInfo.get("mixedMode",       False)),
-           str(carrierInfo.get("cdInteractive",   False)),
-           str(carrierInfo.get("multiSession",    False)),
+           str(carrierInfo.get("containsAudio",       False)),
+           str(carrierInfo.get("containsData",        False)),
+           str(carrierInfo.get("cdExtra",             False)),
+           str(carrierInfo.get("mixedMode",           False)),
+           str(carrierInfo.get("cdInteractive",       False)),
+           str(carrierInfo.get("multiSession",        False)),
+           str(carrierInfo.get("isoFilesystem",       False)),
+           str(carrierInfo.get("jolietFilesystem",    False)),
            discType]
 
     try:
@@ -481,6 +491,8 @@ def cdWorker():
                                 'mixedMode',
                                 'cdInteractive',
                                 'multiSession',
+                                'isoFilesystem',
+                                'jolietFilesystem',
                                 'discType'])
 
         # Open batch manifest in append mode
